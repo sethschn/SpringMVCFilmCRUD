@@ -1,4 +1,4 @@
-package com.skilldistillery.film.contollers;
+package com.skilldistillery.film.controllers;
 
 import java.util.List;
 
