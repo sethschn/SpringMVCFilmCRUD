@@ -13,6 +13,7 @@ public interface FilmDAO {
 	List<Film> findFilmByKeyword(String regexString);
 	Film createFilm(Film film);
 	void deleteFilm(Film film);
+	void updateFilm(Film film);
 
 
 
