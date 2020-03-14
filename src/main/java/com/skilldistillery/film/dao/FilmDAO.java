@@ -12,8 +12,8 @@ public interface FilmDAO {
 	List<Film> findFilmsByActorId(int actorId);
 	List<Film> findFilmByKeyword(String regexString);
 	Film createFilm(Film film);
-	void deleteFilm(Film film);
-	void updateFilm(Film film);
+	String deleteFilm(Film film);
+	Film updateFilm(Film film);
 
 
 

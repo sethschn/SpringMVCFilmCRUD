@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import com.skilldistillery.film.entities.Actor;
 import com.skilldistillery.film.entities.Film;
 
-
 @Component
 public class FilmDAOImpl implements FilmDAO {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -25,8 +24,6 @@ public class FilmDAOImpl implements FilmDAO {
 			e.printStackTrace();
 		}
 	}
-
-	// THIS IS THE ONLY PLACE THAT INTERACTS WITH THE DATABASE!!!
 
 	@Override
 	public Film findFilmById(int filmId) {
@@ -52,7 +49,7 @@ public class FilmDAOImpl implements FilmDAO {
 				double repCost = rs2.getDouble("replacement_cost");
 				String rating = rs2.getString("rating");
 				String features = rs2.getString("special_features");
-				
+
 				film = new Film(filmNumber, title, desc, releaseYear, langId, rentDur, rate, length, repCost, rating,
 						features);
 
@@ -209,26 +206,109 @@ public class FilmDAOImpl implements FilmDAO {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
-		
+
 		return language;
 	}
 
 	@Override
 	public Film createFilm(Film film) {
+		Film newFilm = null;
+		Connection conn = null;
+
+		try {
+			String sql = "insert into film (title, description, release_year, language_id, "
+					+ "rental_duration, rental_rate, length, replacement_cost, rating, special_features)" + " VALUES("
+					+ ", ?" // 1 Title - String
+					+ ", ?" // 2 Description - String
+					+ ", ?" // 3 Release Year - Int
+					+ ", 1" // Language ID - Int
+					+ ", ?" // 4 Rental Duration - Int
+					+ ", ?" // 5 Rental Rate - Double
+					+ ", ?" // 6 Length - Int
+					+ ", ?" // 7 Replacement Cost - Double
+					+ ", ?" // 8 Rating - String
+					+ ", ?)"; // 9 Special Features - String
+
+			String user = "student";
+			String pass = "student";
+			conn = DriverManager.getConnection(URL, user, pass);
+			conn.setAutoCommit(false);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, film.getTitle());
+			stmt.setString(2, film.getDescription());
+			stmt.setInt(3, film.getYear());
+			stmt.setInt(4, film.getRentalDuration());
+			stmt.setDouble(5, film.getRentalRate());
+			stmt.setInt(6, film.getLength());
+			stmt.setDouble(7, film.getReplacementCost());
+			stmt.setString(8, film.getRating());
+			stmt.setString(9, film.getSpecialFeatures());
+			int uc = stmt.executeUpdate();
+			if (uc == 1) {
+				ResultSet keys = stmt.getGeneratedKeys();
+				film.setId(keys.getInt(1));
+//				return film;
+			}
+			conn.commit();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException sqle2) {
+					System.err.println("Error trying to rollback");
+				}
+			}
+			throw new RuntimeException("Error inserting actor " + film);
+		}
+
 		// TODO Auto-generated method stub
-		return null;
+		return film;
 	}
 
 	@Override
-	public void deleteFilm(Film film) {
+	public String deleteFilm(Film film) {
+		String returnStatement = "Film not deleted";
+		Connection conn = null;
+		String sql = "";
+		try {
+			sql = "DELETE FROM film where film.id = ?";
+
+			String user = "student";
+			String pass = "student";
+			conn = DriverManager.getConnection(URL, user, pass);
+			conn.setAutoCommit(false);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, film.getId());
+
+			String joinerFilmID = "select film_actor.film.id from film_actor where film_actor.film_id = ?";
+			PreparedStatement stmt2 = conn.prepareStatement(joinerFilmID);
+			stmt2.setInt(1, film.getId());
+			ResultSet joinResults = stmt.executeQuery();
+			if (joinResults.wasNull()) {
+				int uc = stmt.executeUpdate();
+				if (uc == 1) {
+					returnStatement = film.getTitle() + " successfully removed from database.";
+				}
+			}
+
+		} catch (SQLException e) {
+
+		}
+		return returnStatement;
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void updateFilm(Film film) {
+	public Film updateFilm(Film film) {
 		// TODO Auto-generated method stub
-		
+
+		return film;
+
 	}
 
 }

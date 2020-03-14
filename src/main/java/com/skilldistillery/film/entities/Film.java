@@ -18,6 +18,7 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	private String langauge;
+
 	public Film(Integer id, String title, String description, Integer year, int languageID, int rentalDuration,
 			double rentalRate, Integer length, double replacementCost, String rating, String specialFeatures) {
 		super();
@@ -44,7 +45,6 @@ public class Film {
 	public void setActors(List<Actor> actors) {
 		this.actors = actors;
 	}
-
 
 	public String getLangauge() {
 		return langauge;
