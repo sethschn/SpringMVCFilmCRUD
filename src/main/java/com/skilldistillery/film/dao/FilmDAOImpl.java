@@ -15,7 +15,7 @@ import com.skilldistillery.film.entities.Film;
 
 @Component
 public class FilmDAOImpl implements FilmDAO {
-	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
+	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?serverTimezone=UTC";
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -64,6 +64,7 @@ public class FilmDAOImpl implements FilmDAO {
 		} catch (SQLException e) {
 			System.out.println("findFilmById");
 			System.out.println(e);
+			e.printStackTrace();
 
 		}
 
