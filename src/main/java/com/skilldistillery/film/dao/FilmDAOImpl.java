@@ -213,7 +213,7 @@ public class FilmDAOImpl implements FilmDAO {
 
 	@Override
 	public Film createFilm(Film film) {
-		Film newFilm = null;
+//		Film newFilm = null;
 		Connection conn = null;
 
 		try {
@@ -287,7 +287,7 @@ public class FilmDAOImpl implements FilmDAO {
 			String joinerFilmID = "select film_actor.film.id from film_actor where film_actor.film_id = ?";
 			PreparedStatement stmt2 = conn.prepareStatement(joinerFilmID);
 			stmt2.setInt(1, film.getId());
-			ResultSet joinResults = stmt.executeQuery();
+			ResultSet joinResults = stmt2.executeQuery();
 			if (joinResults.wasNull()) {
 				int uc = stmt.executeUpdate();
 				if (uc == 1) {
@@ -306,6 +306,8 @@ public class FilmDAOImpl implements FilmDAO {
 
 	@Override
 	public Film updateFilm(Film film) {
+		
+		//LOGIC FOR THIS - WHEN PULLING ALL OF THE INFORMATION -> You can update all of fields at once, even if you don't change all of them. Blanket data pull with a blanket data update.
 		// TODO Auto-generated method stub
 
 		return film;
