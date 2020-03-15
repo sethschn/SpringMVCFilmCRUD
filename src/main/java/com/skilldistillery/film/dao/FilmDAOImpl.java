@@ -55,7 +55,7 @@ public class FilmDAOImpl implements FilmDAO {
 
 				List<Actor> actors = findActorsByFilmId(filmNumber);
 				film.setActors(actors);
-				film.setLangauge(findLanguageByLanguageId(langId));
+				film.setLanguage(findLanguageByLanguageId(langId));
 
 			}
 			rs2.close();
@@ -217,10 +217,9 @@ public class FilmDAOImpl implements FilmDAO {
 		Connection conn = null;
 
 		try {
-			String sql = "insert into film (title, description, release_year, language_id, "
-					+ "rental_duration, rental_rate, length, replacement_cost, rating, special_features)" 
-					+ " VALUES("
-					+ ", ?" // 1 Title - String
+			String sql = "insert into film(film.title, film.description, film.release_year, film.language_id, "
+					+ "film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features)" 
+					+ " VALUES(?" // 1 Title - String
 					+ ", ?" // 2 Description - String
 					+ ", ?" // 3 Release Year - Int
 					+ ", 1" // Language ID - Int
@@ -235,7 +234,7 @@ public class FilmDAOImpl implements FilmDAO {
 			String pass = "student";
 			conn = DriverManager.getConnection(URL, user, pass);
 			conn.setAutoCommit(false);
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, film.getTitle());
 			stmt.setString(2, film.getDescription());
 			stmt.setInt(3, film.getYear());

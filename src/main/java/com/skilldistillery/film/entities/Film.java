@@ -17,7 +17,8 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-	private String langauge;
+	private String language;
+	private List<Actor> actors;
 
 	public Film(Integer id, String title, String description, Integer year, int languageID, int rentalDuration,
 			double rentalRate, Integer length, double replacementCost, String rating, String specialFeatures) {
@@ -36,7 +37,6 @@ public class Film {
 
 	}
 
-	private List<Actor> actors;
 
 	public List<Actor> getActors() {
 		return actors;
@@ -46,12 +46,12 @@ public class Film {
 		this.actors = actors;
 	}
 
-	public String getLangauge() {
-		return langauge;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setLangauge(String langauge) {
-		this.langauge = langauge;
+	public void setLanguage(String langauge) {
+		this.language = langauge;
 	}
 
 	public void setId(Integer id) {
@@ -153,7 +153,7 @@ public class Film {
 		result = prime * result + ((actors == null) ? 0 : actors.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((langauge == null) ? 0 : langauge.hashCode());
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + languageID;
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
@@ -193,10 +193,10 @@ public class Film {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (langauge == null) {
-			if (other.langauge != null)
+		if (language == null) {
+			if (other.language != null)
 				return false;
-		} else if (!langauge.equals(other.langauge))
+		} else if (!language.equals(other.language))
 			return false;
 		if (languageID != other.languageID)
 			return false;
@@ -261,8 +261,8 @@ public class Film {
 		builder.append(rating);
 		builder.append(", specialFeatures=");
 		builder.append(specialFeatures);
-		builder.append(", langauge=");
-		builder.append(langauge);
+		builder.append(", language=");
+		builder.append(language);
 		builder.append("]");
 		return builder.toString();
 	}
