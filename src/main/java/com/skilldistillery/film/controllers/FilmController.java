@@ -1,7 +1,6 @@
 package com.skilldistillery.film.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +42,16 @@ public class FilmController {
 		mv.setViewName("WEB-INF/filmKeywordDisplay.jsp");
 		return mv;
 	}
-	// @RequestMapping(path = "")
 
+	@RequestMapping(path = "UpdateFilmData.do", method = RequestMethod.POST)
+	public ModelAndView updateFilmData(@RequestParam("film") Film film) {
+		ModelAndView mv = new ModelAndView();
+		Film filmInfo = filmDao.updateFilm(film);
+		mv.addObject("film", filmInfo);
+		mv.setViewName("WEB-INF/updatedFilmInfo.jsp");
+		return mv;
+	}
+	// @RequestMapping(path = "")
 	// delete FILM
 	// EDIT FILM
 	// THE CAST ACTORS
