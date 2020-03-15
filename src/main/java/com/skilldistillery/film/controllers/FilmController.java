@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,9 +63,11 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "DeleteFilm.do", method = RequestMethod.POST)
-	public ModelAndView deleteFilm(Film film) {
+	public ModelAndView deleteFilm(@ModelAttribute("film") Film film) {
 		ModelAndView mv = new ModelAndView();
+		System.out.println(film);
 		String deletedFilm = filmDao.deleteFilm(film);
+		System.out.println(deletedFilm);
 		mv.addObject("deleted", deletedFilm);
 		mv.setViewName("WEB-INF/delete.jsp");
 		return mv;
