@@ -1,6 +1,7 @@
 package com.skilldistillery.film.controllers;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.skilldistillery.film.dao.FilmDAO;
 import com.skilldistillery.film.entities.Film;
 
@@ -26,8 +26,8 @@ public class FilmController {
 		mv.setViewName("redirect:FilmAdded.do");
 		return mv;
 	}
-	
-	@RequestMapping(path="FilmAdded.do", method=RequestMethod.GET)
+
+	@RequestMapping(path = "FilmAdded.do", method = RequestMethod.GET)
 	public ModelAndView createdFilm() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("WEB-INF/addedFilmDisplay.jsp");
@@ -60,9 +60,14 @@ public class FilmController {
 		mv.setViewName("WEB-INF/updatedFilmInfo.jsp");
 		return mv;
 	}
-	// @RequestMapping(path = "")
-	// delete FILM
-	// EDIT FILM
-	// THE CAST ACTORS
-	// 6 total
+
+	@RequestMapping(path = "DeleteFilm.do", method = RequestMethod.POST)
+	public ModelAndView deleteFilm(Film film) {
+		ModelAndView mv = new ModelAndView();
+		String deletedFilm = filmDao.deleteFilm(film);
+		mv.addObject("deleted", deletedFilm);
+		mv.setViewName("WEB-INF/delete.jsp");
+		return mv;
+		
+	}
 }
