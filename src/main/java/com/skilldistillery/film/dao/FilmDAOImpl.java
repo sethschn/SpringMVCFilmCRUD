@@ -218,7 +218,7 @@ public class FilmDAOImpl implements FilmDAO {
 
 		try {
 			String sql = "insert into film(film.title, film.description, film.release_year, film.language_id, "
-					+ "film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features)" 
+					+ "film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features)"
 					+ " VALUES(?" // 1 Title - String
 					+ ", ?" // 2 Description - String
 					+ ", ?" // 3 Release Year - Int
@@ -247,7 +247,9 @@ public class FilmDAOImpl implements FilmDAO {
 			int uc = stmt.executeUpdate();
 			if (uc == 1) {
 				ResultSet keys = stmt.getGeneratedKeys();
-				film.setId(keys.getInt(1));
+				if (keys.next()) {
+					film.setId(keys.getInt(1));
+				}
 //				return film;
 			}
 			conn.commit();
@@ -262,7 +264,7 @@ public class FilmDAOImpl implements FilmDAO {
 					System.err.println("Error trying to rollback");
 				}
 			}
-			throw new RuntimeException("Error inserting " + film);
+			throw new RuntimeException("Error inserting " + film.getTitle());
 		}
 
 		// TODO Auto-generated method stub
@@ -308,22 +310,20 @@ public class FilmDAOImpl implements FilmDAO {
 	public Film updateFilm(Film film) {
 		Connection conn = null;
 		String sql = "";
-		
-		
+
 		try {
-			sql = "UPDATE film SET" + 
-					"film.title = ?," +  // 1 - String
-					"film.description = ?," +  // 2 - String
-					"film.release_year = ?," +  // 3 - Int
+			sql = "UPDATE film SET" + "film.title = ?," + // 1 - String
+					"film.description = ?," + // 2 - String
+					"film.release_year = ?," + // 3 - Int
 					"film.language_id = ?," + // 4 - Int
 					"film.rental_duration = ?," + // 5 - Int
 					"film.rental_rate = ?," + // 6 - Double
 					"film.length = ?," + // 7 - Int
 					"film.replacement_cost = ?," + // 8 - Double
 					"film.rating = ?," + // 9 - String
-					"film.special_features = ?" + //10 - String
+					"film.special_features = ?" + // 10 - String
 					"WHERE film.id = ?"; // 11 - Int
-					
+
 			String user = "student";
 			String pass = "student";
 			conn = DriverManager.getConnection(URL, user, pass);
@@ -341,14 +341,12 @@ public class FilmDAOImpl implements FilmDAO {
 			stmt.setString(9, film.getRating());
 			stmt.setString(10, film.getSpecialFeatures());
 			stmt.setInt(11, film.getId());
-			
+
 			int uc = stmt.executeUpdate();
 			if (uc == 1) {
 				System.out.println("Update successful.");
 			}
-			
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Could update film information");
@@ -360,8 +358,10 @@ public class FilmDAOImpl implements FilmDAO {
 				}
 			}
 		}
-		
-		//LOGIC FOR THIS - WHEN PULLING ALL OF THE INFORMATION -> You can update all of fields at once, even if you don't change all of them. Blanket data pull with a blanket data update.
+
+		// LOGIC FOR THIS - WHEN PULLING ALL OF THE INFORMATION -> You can update all of
+		// fields at once, even if you don't change all of them. Blanket data pull with
+		// a blanket data update.
 		// TODO Auto-generated method stub
 
 		return film;
