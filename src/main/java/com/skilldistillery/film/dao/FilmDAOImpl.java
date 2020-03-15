@@ -218,7 +218,8 @@ public class FilmDAOImpl implements FilmDAO {
 
 		try {
 			String sql = "insert into film (title, description, release_year, language_id, "
-					+ "rental_duration, rental_rate, length, replacement_cost, rating, special_features)" + " VALUES("
+					+ "rental_duration, rental_rate, length, replacement_cost, rating, special_features)" 
+					+ " VALUES("
 					+ ", ?" // 1 Title - String
 					+ ", ?" // 2 Description - String
 					+ ", ?" // 3 Release Year - Int
@@ -262,7 +263,7 @@ public class FilmDAOImpl implements FilmDAO {
 					System.err.println("Error trying to rollback");
 				}
 			}
-			throw new RuntimeException("Error inserting actor " + film);
+			throw new RuntimeException("Error inserting " + film);
 		}
 
 		// TODO Auto-generated method stub
@@ -306,6 +307,60 @@ public class FilmDAOImpl implements FilmDAO {
 
 	@Override
 	public Film updateFilm(Film film) {
+		Connection conn = null;
+		String sql = "";
+		
+		
+		try {
+			sql = "UPDATE film SET" + 
+					"film.title = ?," +  // 1 - String
+					"film.description = ?," +  // 2 - String
+					"film.release_year = ?," +  // 3 - Int
+					"film.language_id = ?," + // 4 - Int
+					"film.rental_duration = ?," + // 5 - Int
+					"film.rental_rate = ?," + // 6 - Double
+					"film.length = ?," + // 7 - Int
+					"film.replacement_cost = ?," + // 8 - Double
+					"film.rating = ?," + // 9 - String
+					"film.special_features = ?" + //10 - String
+					"WHERE film.id = ?"; // 11 - Int
+					
+			String user = "student";
+			String pass = "student";
+			conn = DriverManager.getConnection(URL, user, pass);
+			conn.setAutoCommit(false);
+			conn.setAutoCommit(false);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, film.getTitle());
+			stmt.setString(2, film.getDescription());
+			stmt.setInt(3, film.getYear());
+			stmt.setInt(4, film.getLanguageID());
+			stmt.setInt(5, film.getRentalDuration());
+			stmt.setDouble(6, film.getRentalRate());
+			stmt.setInt(7, film.getLength());
+			stmt.setDouble(8, film.getReplacementCost());
+			stmt.setString(9, film.getRating());
+			stmt.setString(10, film.getSpecialFeatures());
+			stmt.setInt(11, film.getId());
+			
+			int uc = stmt.executeUpdate();
+			if (uc == 1) {
+				System.out.println("Update successful.");
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Could update film information");
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException sqle2) {
+					System.err.println("Error trying to rollback");
+				}
+			}
+		}
 		
 		//LOGIC FOR THIS - WHEN PULLING ALL OF THE INFORMATION -> You can update all of fields at once, even if you don't change all of them. Blanket data pull with a blanket data update.
 		// TODO Auto-generated method stub
