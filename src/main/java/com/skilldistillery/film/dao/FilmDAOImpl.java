@@ -272,7 +272,7 @@ public class FilmDAOImpl implements FilmDAO {
 	}
 
 	@Override
-	public String deleteFilm(Film film) {
+	public String deleteFilm(int filmId) {
 		String returnStatement = "Film not deleted";
 		Connection conn = null;
 		String sql = "";
@@ -284,16 +284,16 @@ public class FilmDAOImpl implements FilmDAO {
 			conn = DriverManager.getConnection(URL, user, pass);
 			conn.setAutoCommit(false);
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, film.getId());
+			stmt.setInt(1, filmId);
 
 			String joinerFilmID = "select film_actor.film.id from film_actor where film_actor.film_id = ?";
 			PreparedStatement stmt2 = conn.prepareStatement(joinerFilmID);
-			stmt2.setInt(1, film.getId());
+			stmt2.setInt(1, filmId);
 			ResultSet joinResults = stmt2.executeQuery();
 			if (joinResults.wasNull()) {
 				int uc = stmt.executeUpdate();
 				if (uc == 1) {
-					returnStatement = film.getTitle() + " successfully removed from database.";
+					returnStatement = filmId + " successfully removed from database.";
 				}
 			}
 

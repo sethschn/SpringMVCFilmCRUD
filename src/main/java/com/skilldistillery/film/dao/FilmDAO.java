@@ -12,7 +12,7 @@ public interface FilmDAO {
 	List<Film> findFilmsByActorId(int actorId);
 	List<Film> findFilmByKeyword(String regexString);
 	Film createFilm(Film film);
-	String deleteFilm(Film film);
+	String deleteFilm(int filmId);
 	Film updateFilm(Film film);
 
 
