@@ -24,7 +24,7 @@
     </c:otherwise>
   </c:choose>
   <form:form action="DeleteFilm.do" method="POST">
-  <input type="hidden" name="film" value="${film}"/>
+  <input type="hidden" name="filmid" value="${film.id}"/>
   <input type="submit" value="Delete" />
   </form:form>
 </body>
