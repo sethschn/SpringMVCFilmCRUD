@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,10 +43,10 @@ public class FilmController {
 		return mv;
 	}
 
-	@RequestMapping(path = "GetFilmData.do", method = RequestMethod.GET)
-	public ModelAndView getFilmByKeyword(@RequestParam("keyword") String keyword) {
+	@RequestMapping(path = "SearchFilmKeyword.do", method = RequestMethod.GET)
+	public ModelAndView getFilmByKeyword(@RequestParam  String keywords) {
 		ModelAndView mv = new ModelAndView();
-		List<Film> filmList = filmDao.findFilmByKeyword(keyword);
+		List<Film> filmList = filmDao.findFilmByKeyword(keywords);
 		mv.addObject("films", filmList);
 		mv.setViewName("WEB-INF/filmKeywordDisplay.jsp");
 		return mv;
@@ -63,11 +62,9 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "DeleteFilm.do", method = RequestMethod.POST)
-	public ModelAndView deleteFilm(@ModelAttribute("film") Film film) {
+	public ModelAndView deleteFilm(int filmId) {
 		ModelAndView mv = new ModelAndView();
-		System.out.println(film);
-		String deletedFilm = filmDao.deleteFilm(film);
-		System.out.println(deletedFilm);
+		String deletedFilm = filmDao.deleteFilm(filmId);
 		mv.addObject("deleted", deletedFilm);
 		mv.setViewName("WEB-INF/delete.jsp");
 		return mv;
