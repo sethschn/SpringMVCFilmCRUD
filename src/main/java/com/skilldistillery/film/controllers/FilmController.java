@@ -44,7 +44,7 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "SearchFilmKeyword.do", method = RequestMethod.GET)
-	public ModelAndView getFilmByKeyword(@RequestParam  String keywords) {
+	public ModelAndView getFilmByKeyword(@RequestParam String keywords) {
 		ModelAndView mv = new ModelAndView();
 		List<Film> filmList = filmDao.findFilmByKeyword(keywords);
 		mv.addObject("films", filmList);
@@ -62,12 +62,12 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "DeleteFilm.do", method = RequestMethod.POST)
-	public ModelAndView deleteFilm(int filmId) {
+	public ModelAndView deleteFilm(@RequestParam("filmid") int filmId) {
 		ModelAndView mv = new ModelAndView();
 		String deletedFilm = filmDao.deleteFilm(filmId);
 		mv.addObject("deleted", deletedFilm);
 		mv.setViewName("WEB-INF/delete.jsp");
 		return mv;
-		
+
 	}
 }
