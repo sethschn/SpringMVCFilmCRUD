@@ -311,19 +311,21 @@ public class FilmDAOImpl implements FilmDAO {
 	public Film updateFilm(Film film) {
 		Connection conn = null;
 		String sql = "";
+		
+		System.out.println("In update film: film language id: " + film.getLanguageID());
 
 		try {
-			sql = "UPDATE film SET" + "film.title = ?," + // 1 - String
-					"film.description = ?," + // 2 - String
-					"film.release_year = ?," + // 3 - Int
-					"film.language_id = ?," + // 4 - Int
-					"film.rental_duration = ?," + // 5 - Int
-					"film.rental_rate = ?," + // 6 - Double
-					"film.length = ?," + // 7 - Int
-					"film.replacement_cost = ?," + // 8 - Double
-					"film.rating = ?," + // 9 - String
-					"film.special_features = ?" + // 10 - String
-					"WHERE film.id = ?"; // 11 - Int
+			sql = "UPDATE film SET " + "film.title = ?," + // 1 - String
+					" film.description = ?," + // 2 - String
+					" film.release_year = ?," + // 3 - Int
+					" film.language_id = ?," + // 4 - Int
+					" film.rental_duration = ?," + // 5 - Int
+					" film.rental_rate = ?," + // 6 - Double
+					" film.length = ?," + // 7 - Int
+					" film.replacement_cost = ?," + // 8 - Double
+					" film.rating = ?," + // 9 - String
+					" film.special_features = ?" + // 10 - String
+					" WHERE film.id = ?"; // 11 - Int
 
 			String user = "student";
 			String pass = "student";
@@ -346,6 +348,7 @@ public class FilmDAOImpl implements FilmDAO {
 			int uc = stmt.executeUpdate();
 			if (uc == 1) {
 				System.out.println("Update successful.");
+				conn.commit();
 			}
 
 		} catch (SQLException e) {
